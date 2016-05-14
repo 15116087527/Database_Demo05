@@ -1,5 +1,6 @@
 package demo;
 
+import java.util.Calendar;
 import java.util.Scanner;
 
 /**
@@ -37,13 +38,15 @@ public class E14 {
                 days += day;
             case 3:
                 days += day;
-                days += isLeapYear()?1:0;
+                days += isLeapYear() ? 1 : 0;
         }
         return days;
     }
 
     public static void main(String[] args) {
         getDate();
-
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day);
+        System.out.println(calendar.get(Calendar.DAY_OF_YEAR));
     }
 }
