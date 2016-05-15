@@ -14,8 +14,34 @@ SET password = '123', email = 'tester@test.com'
 WHERE id = 4;
 
 DELETE FROM demo.user
-WHERE sex IS NOT NULL ;
+WHERE sex IS NOT NULL;
 
 SELECT *
 FROM demo.user;
 
+USE scott;
+
+SHOW TABLES;
+
+DESC scott.emp;
+DESC scott.dept;
+DESC scott.salgrade;
+
+SELECT *
+FROM scott.emp;
+
+SELECT EMPNO, ENAME, SAL
+FROM scott.emp;
+
+SELECT DISTINCT JOB
+FROM emp;
+
+SELECT count(*)
+FROM emp;
+
+SELECT EMPNO, ENAME, HIREDATE, JOB, SAL
+FROM emp
+WHERE sal > 1000 OR JOB='salesman';
+
+# user:scoot
+# pwd:tiger
