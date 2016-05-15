@@ -11,8 +11,6 @@ import java.sql.SQLException;
  * Created by mingfei.net@gmail.com
  * 2016/5/14.
  */
-
-//JDBC Java DataBase Connectivity
 public class IndexTest {
 
     private static final String URL = "jdbc:mysql://localhost:3306/demo";
