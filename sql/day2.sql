@@ -60,12 +60,42 @@ ORDER BY JOB DESC, ENAME DESC; -- ASCend DESCend
 # pwd:tiger
 
 SELECT *
-FROM emp LIMIT 0,3; -- offset 偏移量， count
+FROM emp
+LIMIT 0, 3; -- offset 偏移量， count
 
 SELECT *
 FROM emp
-WHERE ENAME LIKE '%key%';
+WHERE ENAME NOT LIKE '%a%';
 
 SELECT *
 FROM emp
 WHERE ENAME RLIKE '[a-b]';
+
+SELECT *
+FROM emp
+WHERE JOB NOT IN ('manager', 'salesman', 'clerk');
+
+SELECT *
+FROM emp
+WHERE SAL NOT BETWEEN 1100 AND 1600;
+
+SELECT e.ENAME '员工 姓名'
+FROM emp AS e;
+
+SELECT *
+FROM emp
+WHERE COMM IS NULL;
+
+UPDATE emp
+SET COMM = NULL
+WHERE ename = 'allen';
+
+SELECT
+  ENAME,
+  SAL + ifnull(COMM, 0)
+FROM emp;
+
+SELECT *
+FROM emp;
+
+DESC emp;
