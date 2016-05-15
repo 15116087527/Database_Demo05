@@ -20,6 +20,17 @@ CREATE TABLE demo.user (
 )
   COMMENT '用户表';
 
+CREATE INDEX ind_birthday ON demo.user(birthday);
+DROP INDEX ind_email ON demo.user;
+DESC demo.user;
+SHOW COLUMNS FROM demo.user;
+SHOW INDEXES FROM demo.user;
+
+
+SELECT *
+FROM demo.user
+WHERE email = '';
+
 INSERT INTO demo.user VALUES (NULL, 'tester@test.com', 'tester', '123', 'F', 16, 1.6, 6000, '1996-1-2');
 INSERT INTO demo.user (id, email, password, sex) VALUES (3, 'b@b.com', '123', NULL);
 SELECT *
@@ -64,27 +75,54 @@ CREATE TABLE demo.department (
   tel  VARCHAR(255)
 );
 
+ALTER TABLE demo.student AUTO_INCREMENT = 10000000;
+
 ALTER TABLE demo.student
 ADD CONSTRAINT
   fk_student_department_id
 FOREIGN KEY (department_id)
 REFERENCES demo.department (id);
+-- ON DELETE SET NULL ; -- Cascading Style Sheet
 
-# DESC demo.student; -- describe
+ALTER  TABLE demo.student
+    DROP age;
 
-# INSERT INTO demo.student VALUES (NULL, 'student1', 1);
+ALTER TABLE demo.student
+    MODIFY name VARCHAR(1024);
+
+ALTER TABLE demo.student
+    DROP FOREIGN KEY fk_student_department_id; -- ?
+DESC demo.student; -- describe
+
+INSERT INTO demo.student VALUES (NULL, 'student1', 1);
+INSERT INTO demo.student VALUES (NULL, 'student2', 2);
+DELETE FROM demo.student;
 # TRUNCATE TABLE demo.student;
 
-# SELECT *
-# FROM demo.student;
+SELECT *
+FROM demo.student;
 
+INSERT INTO demo.department VALUES (NULL, 'CS', '...');
+INSERT INTO demo.department VALUES (NULL, 'EE', '...');
 
+SELECT *
+FROM demo.department;
 
-# INSERT INTO demo.department VALUES (NULL, 'CS', '...');
+SET FOREIGN_KEY_CHECKS  = 0;
+SET FOREIGN_KEY_CHECKS  = 1;
 
+DELETE FROM demo.department WHERE id = 2;
+DELETE FROM demo.department WHERE id = 1;
 
-# SELECT *
-# FROM demo.department;
+DROP TABLE demo.student;
+DROP TABLE demo.department;
 
+SHOW TABLES ;
+
+SELECT
+  s.name,
+  d.name
+FROM demo.student s JOIN demo.department d
+    ON s.department_id = d.id;
 
 # DESC demo.department;
