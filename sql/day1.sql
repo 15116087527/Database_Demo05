@@ -20,7 +20,7 @@ CREATE TABLE demo.user (
 )
   COMMENT '用户表';
 
-CREATE INDEX ind_birthday ON demo.user(birthday);
+CREATE INDEX ind_birthday ON demo.user (birthday);
 DROP INDEX ind_email ON demo.user;
 DESC demo.user;
 SHOW COLUMNS FROM demo.user;
@@ -84,14 +84,14 @@ FOREIGN KEY (department_id)
 REFERENCES demo.department (id);
 -- ON DELETE SET NULL ; -- Cascading Style Sheet
 
-ALTER  TABLE demo.student
-    DROP age;
+ALTER TABLE demo.student
+DROP age;
 
 ALTER TABLE demo.student
-    MODIFY name VARCHAR(1024);
+MODIFY name VARCHAR(1024);
 
 ALTER TABLE demo.student
-    DROP FOREIGN KEY fk_student_department_id; -- ?
+DROP FOREIGN KEY fk_student_department_id; -- ?
 DESC demo.student; -- describe
 
 INSERT INTO demo.student VALUES (NULL, 'student1', 1);
@@ -108,16 +108,18 @@ INSERT INTO demo.department VALUES (NULL, 'EE', '...');
 SELECT *
 FROM demo.department;
 
-SET FOREIGN_KEY_CHECKS  = 0;
-SET FOREIGN_KEY_CHECKS  = 1;
+SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 1;
 
-DELETE FROM demo.department WHERE id = 2;
-DELETE FROM demo.department WHERE id = 1;
+DELETE FROM demo.department
+WHERE id = 2;
+DELETE FROM demo.department
+WHERE id = 1;
 
 DROP TABLE demo.student;
 DROP TABLE demo.department;
 
-SHOW TABLES ;
+SHOW TABLES;
 
 SELECT
   s.name,
@@ -126,3 +128,19 @@ FROM demo.student s JOIN demo.department d
     ON s.department_id = d.id;
 
 # DESC demo.department;
+
+CREATE TABLE index_test (
+  id           INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  index_column INT(11) UNSIGNED
+);
+
+CREATE INDEX ind_index_column ON demo.index_test(index_column);
+DROP INDEX ind_index_column ON demo.index_test;
+TRUNCATE TABLE demo.index_test;
+
+SELECT count(*)
+FROM demo.index_test;
+
+SELECT *
+FROM demo.index_test
+WHERE index_column = 999999;
