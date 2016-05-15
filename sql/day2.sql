@@ -30,7 +30,10 @@ DESC scott.salgrade;
 SELECT *
 FROM scott.emp;
 
-SELECT EMPNO, ENAME, SAL
+SELECT
+  EMPNO,
+  ENAME,
+  SAL
 FROM scott.emp;
 
 SELECT DISTINCT JOB
@@ -39,9 +42,30 @@ FROM emp;
 SELECT count(*)
 FROM emp;
 
-SELECT EMPNO, ENAME, HIREDATE, JOB, SAL
+SELECT
+  EMPNO,
+  ENAME,
+  HIREDATE,
+  JOB,
+  SAL
 FROM emp
-WHERE sal > 1000 OR JOB='salesman';
+WHERE sal > 1000 OR JOB = 'salesman';
+
+
+SELECT *
+FROM emp
+ORDER BY JOB DESC, ENAME DESC; -- ASCend DESCend
 
 # user:scoot
 # pwd:tiger
+
+SELECT *
+FROM emp LIMIT 0,3; -- offset 偏移量， count
+
+SELECT *
+FROM emp
+WHERE ENAME LIKE '%key%';
+
+SELECT *
+FROM emp
+WHERE ENAME RLIKE '[a-b]';
