@@ -23,7 +23,7 @@ public class IndexTest {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            new Driver(); // 加载驱动
+            new Driver();
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
             connection.setAutoCommit(false);
             String sql = "INSERT INTO demo.index_test VALUES (NULL, ?)";
