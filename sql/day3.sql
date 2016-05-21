@@ -147,3 +147,98 @@ WHERE e.DEPTNO = 10;
 SELECT ENAME, SAL, dname
 FROM v_emp_read_only
 WHERE DEPTNO = 10;
+
+
+SELECT *
+FROM scott.emp;
+
+SELECT *
+FROM scott.dept;
+
+SELECT e.*
+FROM emp e JOIN dept d
+    ON e.DEPTNO = d.DEPTNO
+WHERE d.DNAME = 'sales';
+
+
+SELECT *
+FROM emp
+WHERE DEPTNO = (
+  SELECT DEPTNO
+  FROM dept
+  WHERE DNAME = 'sales'
+);
+
+START TRANSACTION ;
+
+DELETE FROM emp
+WHERE ENAME = 'allen';
+
+SELECT *
+FROM emp;
+
+ROLLBACK ;
+COMMIT ;
+
+CREATE TABLE temp( -- DDL
+  id int
+);
+
+START TRANSACTION ;
+
+SELECT *
+FROM emp;
+
+DELETE FROM emp WHERE ENAME = 'ward';
+
+SAVEPOINT s1; -- delete ward
+
+UPDATE emp SET DEPTNO = 10 WHERE ENAME='king';
+
+SAVEPOINT s2; -- king > 10
+
+DELETE FROM emp;
+
+ROLLBACK TO s2;
+
+ROLLBACK ;
+
+START TRANSACTION ;
+TRUNCATE TABLE emp;
+DELETE FROM emp;
+SELECT *
+FROM emp;
+ROLLBACK ;
+
+
+SELECT count(*)
+FROM db_ip.ip;
+
+TRUNCATE db_ip.ip;
+
+SELECT min(sal), max(sal), avg(sal), sum(sal), count(sal) , count(*)
+FROM emp;
+
+SELECT DEPTNO, min(sal), max(sal), avg(sal), sum(sal), count(sal) , count(*)
+FROM emp
+GROUP BY DEPTNO;
+
+SELECT DEPTNO, JOB, min(sal), max(sal), avg(sal), sum(sal), count(sal) , count(*)
+FROM emp
+GROUP BY JOB, DEPTNO;
+
+SELECT lcase(ENAME)
+FROM emp;
+
+UPDATE emp SET ENAME = lcase(ENAME);
+
+SELECT length(ENAME)
+FROM emp;
+
+SELECT round(avg(sal),2)
+FROM emp;
+
+SELECT now();
+
+SELECT mid(ENAME, 1, 2)
+FROM emp;
