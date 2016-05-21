@@ -1,29 +1,121 @@
 # PART I
 # 1. 查找部门 30 中员工的详细信息
+SELECT *
+FROM scott.emp
+WHERE DEPTNO = 30;
 # 2. 找出从事 clerk 工作的员工的编号、姓名、部门号
+SELECT
+  EMPNO,
+  ENAME,
+  DEPTNO
+FROM emp
+WHERE JOb = 'clerk';
 # 3. 检索出奖金多于基本工资的员工信息
+SELECT *
+FROM emp
+WHERE comm > sal; -- null
 # 4. 检索出奖金多于基本工资 30% 员工信息
+SELECT *
+FROM emp
+WHERE COMM > SAL * 0.3;
 # 5. 希望看到10部门的经理或者 20 部门的职员 clerk 的信息
+SELECT *
+FROM emp
+WHERE (DEPTNO = 10 AND JOB = 'manager') OR (DEPTNO = 20 AND JOB = 'clerk');
 # 6. 找出 10 部门的经理、20 部门的职员或者既不是经理也不是职员但是高于 2000 元的员工信息
+SELECT *
+FROM emp
+WHERE (DEPTNO = 10 AND JOB = 'manager') OR (DEPTNO = 20 AND JOB = 'clerk') OR
+      (JOB <> 'manager' AND JOB <> 'clerk' AND emp.SAL + ifnull(COMM, 0) > 2000);
 # 7. 找出获得奖金的员工的工作
+SELECT
+  JOB,
+  COMM
+FROM emp
+WHERE COMM IS NOT NULL AND emp.COMM > 0;
 # 8. 找出奖金少于100或者没有获得奖金的员工的信息
+SELECT
+  JOB,
+  COMM
+FROM emp
+WHERE COMM IS NULL OR COMM < 100;
 # 9. 查找员工雇佣日期是当月的最后一天雇佣的
+SELECT *
+FROM emp
+WHERE HIREDATE = last_day(HIREDATE);
 # 10. 检索出雇佣年限超过 35 年的员工信息
+SELECT *
+FROM emp
+WHERE date_sub(current_date, INTERVAL 28 YEAR) > emp.HIREDATE;
+
+SELECT datediff(current_date, '2000-1-1');
 # 11. 找出姓名以 A、B、S 开始的员工信息
+SELECT *
+FROM emp
+WHERE ENAME REGEXP '^[abs]';
 # 12. 找到名字长度为 4 个字符的员工信息
+SELECT *
+FROM emp
+WHERE length(ENAME) = 4;
 # 13. 名字中不包含 R 字符的员工信息
+SELECT *
+FROM emp
+WHERE ENAME NOT LIKE '%r%';
 # 14. 找出员工名字的前3个字符
+SELECT substr(ENAME, 1, 3)
+FROM emp;
 # 15. 将名字中 A 改为 a
+SELECT replace(ENAME, 'a', 'A')
+FROM emp;
 # 16. 将员工的雇佣日期拖后10年
+SELECT
+  HIREDATE,
+  date_add(HIREDATE, INTERVAL 10 YEAR)
+FROM emp;
 # 17. 返回员工的详细信息并按姓名排序
+SELECT *
+FROM emp
+ORDER BY ENAME;
 # 18. 返回员工的信息并按员工的工作年限降序排列
+SELECT *
+FROM emp
+ORDER BY HIREDATE;
 # 19. 返回员工的信息并按工作降序、工资升序排列
+SELECT *
+FROM emp
+ORDER BY JOB DESC, sal + ifnull(COMM, 0);
 # 20. 返回员工的姓名、雇佣年份和月份，并按月份和雇佣日期排序
+SELECT
+  ENAME,
+  HIREDATE,
+  extract(YEAR FROM HIREDATE),
+  extract(MONTH FROM HIREDATE)
+FROM emp
+ORDER BY extract(MONTH FROM HIREDATE), extract(DAY FROM HIREDATE);
 # 21. 计算员工的日薪，每月按30天
+SELECT round((SAL + ifnull(COMM, 0)) / 30, 2)
+FROM emp;
 # 22. 找出2月份雇佣的员工
+SELECT *
+FROM emp
+WHERE extract(MONTH FROM HIREDATE) = 2;
 # 23. 至今为止，员工被雇佣的天数
+SELECT datediff(current_date, HIREDATE)
+FROM emp;
 # 24. 找出姓名中包含 A 的员工信息
+SELECT *
+FROM emp
+WHERE ENAME LIKE '%a%';
 # 25. 计算出员工被雇佣了多少年、多少月、多少日
+SELECT datediff(current_date, HIREDATE)
+FROM emp;
+
+SELECT from_days(1234);
+
+SELECT date_format('2016-5-21', '%Y 年 %m 月 %d 日');
+
+SELECT date_format(from_days(datediff(current_date, HIREDATE)), '%y 年 %m 月 %d 日')
+FROM emp;
 
 # PART II
 # 1. 返回拥有员工的部门名、部门号

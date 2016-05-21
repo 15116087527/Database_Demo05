@@ -31,7 +31,7 @@ public class DumpIp {
             while ((line = bufferedReader.readLine()) != null) {
                 start = line.split("\\s+")[0];
                 end = line.split("\\s+")[1];
-                address = line.replaceAll(start, "").replaceAll(end, "").trim();
+                address = line.replaceAll(start + "\\s+" + end, "").trim();
                 Ip ip = new Ip(start, end, address);
                 ips.add(ip);
             }

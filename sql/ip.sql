@@ -7,7 +7,9 @@ CREATE TABLE db_ip.ip (
   adress VARCHAR(255)
 );
 
-SELECT count(*)
+SELECT *
 FROM db_ip.ip;
+
+TRUNCATE TABLE db_ip.ip;
 
 -- IPV4 111.111.111.111
