@@ -46,13 +46,16 @@ public class DumpIp {
         try {
             new Driver();
             connection = DriverManager.getConnection(URL);
+            connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(SQL);
             for (Ip ip : ips) {
                 preparedStatement.setString(1, ip.getStart());
                 preparedStatement.setString(2, ip.getEnd());
                 preparedStatement.setString(3, ip.getAddress());
-                preparedStatement.executeUpdate();
+                preparedStatement.addBatch();
             }
+            preparedStatement.executeBatch();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
