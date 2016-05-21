@@ -119,22 +119,142 @@ FROM emp;
 
 # PART II
 # 1. 返回拥有员工的部门名、部门号
+SELECT
+  d.DEPTNO,
+  d.DNAME
+FROM emp e JOIN dept d
+    ON e.DEPTNO = d.DEPTNO;
 # 2. 工资多于 scott 的员工信息
+SELECT *
+FROM emp
+WHERE sal + ifnull(COMM, 0) > (
+  SELECT sal + ifnull(COMM, 0)
+  FROM emp
+  WHERE ENAME = 'scott'
+);
 # 3. 返回员工和所属经理的姓名
+SELECT
+  e1.ENAME,
+  e2.ENAME
+FROM emp e1 JOIN emp e2
+    ON e1.MGR = e2.EMPNO;
 # 4. 返回雇员的雇佣日期早于其经理雇佣日期的员工及其经理姓名
+SELECT
+  e1.ENAME,
+  e2.ENAME
+FROM emp e1 JOIN emp e2
+    ON e1.MGR = e2.EMPNO
+WHERE e1.HIREDATE < e2.HIREDATE;
 # 5. 返回员工姓名及其所在的部门名称
+SELECT
+  e.ENAME,
+  d.DNAME
+FROM emp e JOIN dept d
+    ON e.DEPTNO = d.DEPTNO;
 # 6. 返回从事 clerk 工作的员工姓名和所在部门名称
+SELECT
+  e.ENAME,
+  d.DNAME
+FROM emp e JOIN dept d
+    ON e.DEPTNO = d.DEPTNO
+WHERE e.JOB = 'clerk';
 # 7. 返回部门号及其本部门的最低工资
+SELECT
+  DEPTNO,
+  min(sal + ifnull(COMM, 0))
+FROM emp
+GROUP BY DEPTNO;
 # 8. 返回销售部 sales 所有员工的姓名
+SELECT ENAME
+FROM emp
+WHERE DEPTNO = (
+  SELECT DEPTNO
+  FROM dept
+  WHERE DNAME = 'sales'
+);
 # 9. 返回工资多于平均工资的员工
+SELECT *
+FROM emp
+WHERE sal + ifnull(COMM, 0) > (
+  SELECT avg(sal + ifnull(COMM, 0))
+  FROM emp
+);
 # 10. 返回与 scott 从事相同工作的员工
+SELECT *
+FROM emp
+WHERE JOB = (
+  SELECT JOB
+  FROM emp
+  WHERE ENAME = 'scott'
+);
 # 11. 返回与30部门员工工资水平高于的员工姓名与工资
+SELECT
+  ENAME,
+  sal + ifnull(COMM, 0)
+FROM emp
+WHERE sal + ifnull(COMM, 0) > (
+  SELECT avg(sal + ifnull(COMM, 0))
+  FROM emp
+  WHERE DEPTNO = 30
+);
 # 12. 返回工资高于30部门所有员工工资水平的员工信息
 # 13. 返回部门号、部门名、部门所在位置及其每个部门的员工总数
+SELECT
+  d.DEPTNO,
+  d.DNAME,
+  d.LOC,
+  count(*)
+FROM emp e JOIN dept d
+    ON e.DEPTNO = d.DEPTNO
+GROUP BY e.DEPTNO;
 # 14. 返回员工的姓名、所在部门名及其工资
+SELECT
+  e.ENAME,
+  d.DNAME,
+  e.SAL + ifnull(e.COMM, 0)
+FROM emp e JOIN dept d
+    ON e.DEPTNO = d.DEPTNO;
 # 15. 返回雇员表中不在同一部门但是从事相同工作的员工信息
+SELECT
+  e1.ENAME,
+  e2.ENAME
+FROM emp e1, emp e2
+WHERE e1.DEPTNO <> e2.DEPTNO AND e1.JOB = e2.JOB;
 # 16. 返回员工的详细信息，包括部门名
+SELECT
+  e.*,
+  d.DNAME
+FROM emp e JOIN dept d
+    ON e.DEPTNO = d.DEPTNO;
 # 17. 返回员工工作及其从事此工作的最低工资
+SELECT
+  JOB,
+  min(sal + ifnull(COMM, 0))
+FROM emp
+GROUP BY JOB;
 # 18. 返回不同部门经理的最低工资
+SELECT
+  DEPTNO,
+  min(sal + ifnull(COMM, 0))
+FROM emp
+WHERE JOB = 'salesman'
+GROUP BY DEPTNO;
 # 19. 计算出员工的年薪，并且以年薪排序
+SELECT
+  ENAME,
+  (sal + ifnull(COMM, 0)) * 12
+FROM emp
+ORDER BY 2;
 # 20. 返回工资处于第4级别的员工的姓名
+SELECT e.ENAME
+FROM emp e JOIN salgrade s
+    ON e.SAL BETWEEN s.LOSAL AND s.HISAL
+WHERE s.GRADE = 4;
+
+
+SELECT
+  deptno,
+  avg(sal)
+FROM emp
+GROUP BY DEPTNO
+HAVING avg(sal) < 2000;
