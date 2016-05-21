@@ -3,7 +3,6 @@ package demo;
 import com.mysql.jdbc.Driver;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,7 +19,7 @@ import java.util.List;
 public class DumpIp {
 
     private static final String FILE = "data/ip.txt";
-    private static final java.lang.String URL = "jdbc:mysql:///db_ip?user=root&password=123456";
+    public static final java.lang.String URL = "jdbc:mysql:///db_ip?user=root&password=123456";
     private static final java.lang.String SQL = "INSERT INTO db_ip.ip VALUES(NULL, ?, ?, ?)";
     private static List<Ip> ips;
 
@@ -32,12 +31,30 @@ public class DumpIp {
                 start = line.split("\\s+")[0];
                 end = line.split("\\s+")[1];
                 address = line.replaceAll(start + "\\s+" + end, "").trim();
-                Ip ip = new Ip(start, end, address);
+                Ip ip = new Ip(convert(start), convert(end), address);
                 ips.add(ip);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static long convert(String ip) {
+        // 6.2.55.177
+        String[] strings = ip.split("\\.");
+        ip = strings[0]; // 6
+        for (int i=1; i<strings.length;i++) {
+            if (strings[i].length() == 1) {
+                ip += "00" + strings[i];
+            }
+            if (strings[i].length() == 2) {
+                ip += "0" + strings[i];
+            }
+            if (strings[i].length() == 3) {
+                ip += strings[i];
+            }
+        }
+        return Long.parseLong(ip);
     }
 
     private static void dump() {
@@ -49,8 +66,8 @@ public class DumpIp {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(SQL);
             for (Ip ip : ips) {
-                preparedStatement.setString(1, ip.getStart());
-                preparedStatement.setString(2, ip.getEnd());
+                preparedStatement.setLong(1, ip.getStart());
+                preparedStatement.setLong(2, ip.getEnd());
                 preparedStatement.setString(3, ip.getAddress());
                 preparedStatement.addBatch();
             }
@@ -85,29 +102,29 @@ public class DumpIp {
 }
 
 class Ip {
-    private String start;
-    private String end;
+    private long start;
+    private long end;
     private String address;
 
-    public Ip(String start, String end, String address) {
+    public Ip(long start, long end, String address) {
         this.start = start;
         this.end = end;
         this.address = address;
     }
 
-    public String getStart() {
+    public long getStart() {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(long start) {
         this.start = start;
     }
 
-    public String getEnd() {
+    public long getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(long end) {
         this.end = end;
     }
 
