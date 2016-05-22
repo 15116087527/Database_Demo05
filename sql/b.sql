@@ -5,7 +5,7 @@ CREATE DATABASE db_b;
 DROP TABLE IF EXISTS db_b.admin;
 CREATE TABLE db_b.admin (
   id       INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(255),
+  email VARCHAR(255),
   password VARCHAR(255)
 );
 
