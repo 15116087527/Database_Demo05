@@ -42,6 +42,18 @@ FROM db_csdn.user
 GROUP BY password
 ORDER BY 2 DESC
 LIMIT 10;
+/*
+123456789	235025
+12345678	212751
+11111111	76346
+dearbook	46054
+00000000	34952
+123123123	19986
+1234567890	17791
+88888888	15033
+111111111	6995
+147258369	5966
+*/
 
 # 排名前十的邮箱
 SELECT substr(email, instr(email, '@'), length(email)), count(*) -- Java String.indexOf("")
