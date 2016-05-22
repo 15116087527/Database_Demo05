@@ -76,3 +76,12 @@ SELECT
 FROM db_a.activity a JOIN db_a.enroll e
     ON a.id = e.activityId
 WHERE a.id = 1;
+
+TRUNCATE TABLE db_a.enroll;
+SET FOREIGN_KEY_CHECKS =0;
+TRUNCATE TABLE db_a.activity;
+
+LOAD DATA LOCAL INFILE 'c:/SELECT___FROM_db_a_activity.tsv' INTO TABLE db_a.activity
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+(name);
